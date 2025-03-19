@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Busca na Base de Dados XLS</title>
+</head>
+<body>
+    <h2>Busca na Base de Dados XLS</h2>
+    <form action="/buscar" method="GET">
+        <input type="text" name="termo" placeholder="Digite o termo de busca" value="<%= termo %>" />
+        <button type="submit">Buscar</button>
+    </form>
+
+    <% if (resultados.length > 0) { %>
+        <h3>Resultados:</h3>
+        <table border="1">
+            <tr>
+                <% Object.keys(resultados[0]).forEach(coluna => { %>
+                    <th><%= coluna %></th>
+                <% }) %>
+            </tr>
+            <% resultados.forEach(linha => { %>
+                <tr>
+                    <% Object.values(linha).forEach(celula => { %>
+                        <td><%= celula %></td>
+                    <% }) %>
+                </tr>
+            <% }) %>
+        </table>
+    <% } else if (termo) { %>
+        <p>Nenhum resultado encontrado para "<%= termo %>".</p>
+    <% } %>
+</body>
+</html>
