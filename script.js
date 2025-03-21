@@ -10,9 +10,10 @@ let filteredData = [];
 Papa.parse(csvUrl, {
     download: true,
     header: true,
+    delimiter: ",", // Substitua pela delimitador correto
     complete: function(results) {
         allData = results.data;
-        displayData(allData); // Exibe todos os dados inicialmente
+        displayData(allData);
     }
 });
 
