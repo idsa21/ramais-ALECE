@@ -17,39 +17,52 @@ Papa.parse(csvUrl, {
     }
 });
 
+function removeAcentosPontuacao(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s]/gi, '');
+}
+
+
+
 function displayData(data) {
-    let table = '<table><thead><tr>';
-    for (let header in data[0]) {
-        table += `<th>${header}</th>`;
-    }
-    table += '</tr></thead><tbody>';
-
-    data.forEach(row => {
-        table += '<tr>';
-        for (let cell in row) {
-            table += `<td>${row[cell]}</td>`;
+    if (data.length === 0) {
+        dataContainer.innerHTML = '<p>ramal / setor não encontrado</p>';
+    } else {
+        let table = '<table><thead><tr>';
+        if (data.length > 0) {
+            for (let header in data[0]) {
+                table += `<th>${header}</th>`;
+            }
         }
-        table += '</tr>';
-    });
+        table += '</tr></thead><tbody>';
 
-    table += '</tbody></table>';
-    dataContainer.innerHTML = table;
+        data.forEach(row => {
+            table += '<tr>';
+            for (let cell in row) {
+                table += `<td>${row[cell]}</td>`;
+            }
+            table += '</tr>';
+        });
+
+        table += '</tbody></table>';
+        dataContainer.innerHTML = table;
+    }
 }
 
 searchButton.addEventListener('click', function() {
-    const searchTerm = searchInput.value.toLowerCase();
+    const searchTerm = removeAcentosPontuacao(searchInput.value.toLowerCase());
     if (searchTerm === '') {
-        displayData(allData); // Exibe todos os dados se o campo de busca estiver vazio
+        displayData(allData);
     } else {
-        filteredData = allData.filter(row => {
+        const filteredData = allData.filter(row => {
             for (let cell in row) {
-                if (String(row[cell]).toLowerCase().includes(searchTerm)) {
+                const cellValue = removeAcentosPontuacao(String(row[cell]).toLowerCase());
+                if (cellValue.includes(searchTerm)) {
                     return true;
                 }
             }
             return false;
         });
-        displayData(filteredData); // Exibe os dados filtrados
+        displayData(filteredData);
     }
 });
 
