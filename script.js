@@ -67,5 +67,6 @@ searchButton.addEventListener('click', function() {
 });
 
 returnButton.addEventListener('click', function() {
-    displayData(allData); // Exibe todos os dados originais
+    displayData(allData);
+    searchInput.value = ''; // Limpa o campo de busca
 });
